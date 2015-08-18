@@ -1,6 +1,6 @@
 var SerialPort = require('serialport').SerialPort;
 
-//var irMagician = new SerialPort("/dev/tty.usbmodem0121", { baudrate: 9600 });
+//var irMagician = new SerialPort("/dev/tty.usbmodem0121", { baudrate: 9600 });//for mac
 var irMagician = new SerialPort("/dev/ttyACM0", { baudrate: 9600 });
 
 irMagician.on("open", function () {

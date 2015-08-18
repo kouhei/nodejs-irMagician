@@ -72,7 +72,6 @@ async.waterfall([
             serial.write('b,'+POS['bank']+'\n',function(err,Bres){
                 if(err !== undefined){console.log('err : '+err);}
                 //if(Bres !== undefined){console.log('Bres : '+Bres);}
-                //callback(null,position,rawX);
 
                 //console.log('write : w,'+POS['pos']+','+rawX[number]);
                 serial.write('w,'+POS['pos']+','+rawX[number]+'\n',function(err,Wres){
@@ -107,65 +106,3 @@ async.waterfall([
     serial.close();
     console.log('serial closed');
 });
-
-
-
-/*function(position,recNumber,rawX,callback){
-    async.each(position, function(n, callback){
-        // 処理1
-        console.log('write : b,'+position[n]['bank']);
-        serial.write('b,'+position[n]['bank']+'\n',function(err){
-            if(err !== undefined){console.log('err : '+err);}
-            //callback(null,position,rawX);
-
-            console.log('write : w,'+position[n]['pos']+','+rawX[n]);
-            serial.write('w,'+position[n]['pos']+','+rawX[n]+'\n',function(err){
-                if(err !== undefined){console.log('err : '+err);}
-                //callback(null);
-
-                console.log('write : p');
-                serial.write('p\n',function(err){
-                    if(err !== undefined){console.log('err : '+err);}
-                    callback();
-                });
-
-            });
-
-        });
-
-    }, function(err){
-        //処理2
-        if(err) throw err;
-
-        console.log('async.each all done.');
-        callback(null);
-    });
-}
-*/
-/*
-function(recNumber,rawX, callback) {
-
-    console.log('write : b,'+position[0]['bank']);
-
-    serial.write('b,'+position[0]['bank']+'\n',function(err){
-        if(err !== undefined){console.log('err : '+err);}
-        callback(null,position,rawX);
-    });
-},
-    function(position,rawX, callback) {
-        console.log('write : w,'+position[0]['pos']+','+rawX[0]);
-
-        serial.write('w,'+position[0]['pos']+','+rawX[0]+'\n',function(err){
-            if(err !== undefined){console.log('err : '+err);}
-            callback(null);
-        });
-    },
-        function(callback) {
-            console.log('write : p');
-
-            serial.write('p\n',function(err){
-                if(err !== undefined){console.log('err : '+err);}
-                callback(null);
-            });
-        }
-*/
