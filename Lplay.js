@@ -2,7 +2,8 @@ var fs = require('fs'),
     async = require('async'),
     SerialPort = require('serialport').SerialPort,
     fileName,
-    serial;
+    serial,
+    port;
 
 // 引数チェック
 if (process.argv.length < 3) {
@@ -11,8 +12,10 @@ if (process.argv.length < 3) {
 // 引数の内容を受け取る
 fileName = process.argv[2];
 
+port = process.argv[3] || '/dev/ttyACM0';
+
 //serial = new SerialPort('/dev/tty.usbmodem0121', { baudrate: 9600 });//for mac
-serial = new SerialPort('/dev/ttyACM0', { baudrate: 9600 });
+serial = new SerialPort(port , { baudrate: 9600 });
 
 async.waterfall([
     function(callback){

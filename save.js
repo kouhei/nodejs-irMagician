@@ -1,7 +1,7 @@
 var async = require('async'),
     fs = require('fs'),
-    SerialPort = require("serialport").SerialPort,
-    sp = new SerialPort("/dev/ttyACM0", { baudrate: 9600 }),
+    SerialPort = require('serialport').SerialPort,
+    sp,
     i_1 = true,
     i_6 = true,
     fileName,
@@ -10,7 +10,8 @@ var async = require('async'),
     recNumber,
     array=[],
     dataArray=[],
-    dataCount=0;
+    dataCount=0,
+    port = '';
 
 
 // 引数チェック
@@ -19,6 +20,9 @@ if (process.argv.length < 3) {
 }
 // 引数の内容を受け取る
 fileName = process.argv[2];
+port = process.argv[3] || '/dev/ttyACM0';
+
+sp = new SerialPort(port, { baudrate: 9600 })
 
 async.waterfall([
     function( callback ){
