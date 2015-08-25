@@ -1,2 +1,6 @@
 *.py
 *.json
+/python/
+/sampleData/
+http.js
+indexBackup.js

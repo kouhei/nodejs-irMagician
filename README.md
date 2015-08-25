@@ -1,4 +1,7 @@
-# node-irMT
+# node-irMagician
+
+##TO DO LIST
+
 
 ##LICENCE
 MIT
