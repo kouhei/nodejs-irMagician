@@ -1,10 +1,12 @@
 # node-irMagician
 
-##TO DO LIST
-
-
-# node-irMT
 you can use [irMagician](http://www.omiya-giken.com/?cat=13) with Node.js
+
+
+[irMagician](http://www.omiya-giken.com/?cat=13)をNode.jsで使うためのライブラリ
+
+##Author
+[fai1618](http://github.com/fai1618)
 
 ##LICENCE
 This library is licensed under the MIT license.
