@@ -1,0 +1,122 @@
+<head>
+    <meta charset="utf-8">
+    <title>controller</title>
+    <!--<script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>-->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>');
+    </script>
+
+    <script>
+        $(function() {
+            var socket = io.connect('http://192.168.11.11:2056');
+            socket.on('connect', function() {
+                $('#condition').text('socket connected');
+            });
+
+            //接続が切れたら?
+            socket.on("disconnect", function(data) {
+                $('#condition').text('socket disconnected');
+            });
+
+
+            $('#lightOFF').on('click', function() {
+                socket.emit('lightOFF');
+                console.log('lightOFF');
+
+                //MEMO:連続でタッチするのを防ぐため
+                $('#lightOFF').css('opacity', '0.3');
+                $('#lightON').css('opacity', '0.3');
+                setTimeout(function() {//MEMO:finishedイベントがこなくても5秒後には再表示
+                    console.log('not busy');
+                    $('#lightOFF').css('opacity', '1.0');
+                    $('#lightON').css('opacity', '1.0');
+                }, 5000);//NOTE:本当にbusyじゃないわけじゃない
+            });
+
+            $('#lightON').on('click', function() {
+                console.log('lightON');
+                socket.emit('lightON');
+
+                //MEMO:連続でタッチするのを防ぐため
+                $('#lightON').css('opacity', '0.3');
+                $('#lightOFF').css('opacity', '0.3');
+
+                setTimeout(function() {//MEMO:finishedイベントがこなくても5秒後には再表示
+                    console.log('not busy');
+                    $('#lightOFF').css('opacity', '1.0');
+                    $('#lightON').css('opacity', '1.0');
+                }, 5000); //NOTE:本当にbusyじゃないわけじゃない
+            });
+
+            socket.on('lightOFF', function() {
+                console.log('lightOFF');
+                //MEMO:連続でタッチするのを防ぐため
+                $('#lightOFF').css('opacity', '0.3');
+                $('#lightON').css('opacity', '0.3');
+                setTimeout(function() { //MEMO:finishedイベントがこなくても5秒後には再表示
+                    console.log('not busy');
+                    $('#lightOFF').css('opacity', '1.0');
+                    $('#lightON').css('opacity', '1.0');
+                }, 5000); //NOTE:本当にbusyじゃないわけじゃない
+            });
+
+            socket.on('lightON', function() {
+                console.log('lightON');
+                //MEMO:連続でタッチするのを防ぐため
+                $('#lightOFF').css('opacity', '0.3');
+                $('#lightON').css('opacity', '0.3');
+                setTimeout(function() { //MEMO:finishedイベントがこなくても5秒後には再表示
+                    console.log('not busy');
+                    $('#lightOFF').css('opacity', '1.0');
+                    $('#lightON').css('opacity', '1.0');
+                }, 5000); //NOTE:本当にbusyじゃないわけじゃない
+            });
+
+            socket.on('finished', function() {
+                console.log('finished');
+                //MEMO:元に戻す
+                $('#lightOFF').css('opacity', '1.0');
+                $('#lightON').css('opacity', '1.0');
+            });
+        });
+    </script>
+    <style>
+        body{
+            background-color:black;
+            color:aqua;
+        }
+        .light{
+            display:block;
+            min-width:200px;
+            min-height:200px;
+            height:30%;
+            width:30%;
+            margin: 30px auto;
+            border: solid 1px aqua;
+            font-size: 50px;
+        }
+        #lightON{
+            color:chartreuse;
+            background-color: rgba(30, 144, 255, 0);
+        }
+        #lightOFF{
+            color:aquamarine;
+            background-color:rgba(240, 248, 255, 0);
+        }
+        #condition{
+            font-size: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>controller</h1>
+    <p id="condition">socket connecting...</p>
+
+    <button type="button" id="lightON" class="light">lightON</button>
+    <button type="button" id="lightOFF" class="light">lightOFF</button>
+</body>

@@ -1,6 +1,6 @@
-*.py
-*.json
-/python/
-/sampleData/
+/python/*
+/sampleData/*
 http.js
 indexBackup.js
+save.old.js
+nohup.out
