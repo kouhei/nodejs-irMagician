@@ -25,7 +25,11 @@ var fs = require('fs'),
 
     Mailer = require('../src/mailer'),
     mailer,
-    mailerPass;
+    mailerPass,
+
+    GetDate = require('../src/getDate.js'),
+    getDate = new GetDate();
+
 
 arduino = new SerialPort('/dev/ttyACM0');
 irMagician = new IRMagician('/dev/ttyACM1');//MEMO:arduinoと同時に繋いだ時
@@ -61,7 +65,7 @@ arduino.on('open', function(){
           case '0' : console.log(color.info('door is closed')); break;
           case '1\n' :
           case '1' :
-            console.log(color.info('door is opened'));
+            console.log(color.info('[' + getDate.getTime()+'] door is opened'));
             if (mailer) { mailer.send('ドアが開きました'); }
             lightJudge();
             break;
