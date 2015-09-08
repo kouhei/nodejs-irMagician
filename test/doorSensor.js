@@ -4,6 +4,11 @@
 ※メールは両方ともgmailのみ可
 
 */
+
+process.on('exit', function () {
+  console.log('exit.');
+});
+
 var fs = require('fs'),
     color = require('../src/color'),
     //http = require('http'),
@@ -27,7 +32,7 @@ irMagician = new IRMagician('/dev/ttyACM1');//MEMO:arduinoと同時に繋いだ�
 
 if(process.argv[2] && process.argv[2] && process.argv[2]){
   mailer = new Mailer(process.argv[2], process.argv[3], process.argv[4]);
-  mailer.send();
+  mailer.send('doorSensor.jsが起動しました');
 }else{
   console.log(color.error('mailer is not defined!'));
 }
@@ -57,7 +62,7 @@ arduino.on('open', function(){
           case '1\n' :
           case '1' :
             console.log(color.info('door is opened'));
-            if (mailer) { mailer.send(); }
+            if (mailer) { mailer.send('ドアが開きました'); }
             lightJudge();
             break;
           default:console.log(color.error('error'));
@@ -68,4 +73,3 @@ arduino.on('open', function(){
         console.log(color.warning('arduino is closed'));
     });
 });
-//TODO:mailer.sendに引数として送るメッセージの内容をつけるようにする

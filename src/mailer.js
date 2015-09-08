@@ -2,6 +2,7 @@ var SendMail = function (toAddress, myAddress, myPassword) {
   'use strict';
   this.color = require('./color');
   this.mailer = require('nodemailer');
+
   if (!myAddress) {
     throw this.color.error('mailer : myAddress is not defined!');
   } else {
@@ -21,7 +22,6 @@ var SendMail = function (toAddress, myAddress, myPassword) {
     console.log(toAddress);
   }
 
-  //this.SendMail = function () {
     this.setting = {
       service: 'Gmail',
       ssl: true,
@@ -31,11 +31,10 @@ var SendMail = function (toAddress, myAddress, myPassword) {
         pass: this.myPassword
       }
     };
-  //};
 };
 
 SendMail.prototype = {
-  send: function () {
+  send: function (message) {
     'use strict';
     var self = this,
     // SMTPの接続
@@ -44,7 +43,7 @@ SendMail.prototype = {
         from: this.myAddress,
         to: this.toAddress,
         subject: 'doorSensorからの通知',
-        html: '<p>ドアが開きました</p>'
+        html: '<p>' + message + '</p>'
       };
     // メールの送信
     transporter.sendMail(mailOptions, function (err, res) {
@@ -53,7 +52,7 @@ SendMail.prototype = {
         console.log(err);
       } else {
         // 送信に成功したとき
-        console.log('send mail to ' + self.toAddress);
+        console.log(self.color.safe('send mail to ' + self.toAddress));
       }
       // SMTPの切断
       transporter.close();
