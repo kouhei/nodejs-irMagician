@@ -8,10 +8,11 @@
         window.jQuery || document.write('<script src="js/jquery-1.11.1.min.js"><\/script>');
     </script>
     <script>
+        var raspiIP = 'http:192.168.11.10:8080';
         $(function(){
 
             function clickingLightButton(judge){//judge:lightONかoffか
-                var url = 'http://192.168.11.11:8080';
+                var url = raspiIP;
                 if(judge === 'OFF'){
                     console.log('lightOFF');
                     $.post(url, 'lightOFF');

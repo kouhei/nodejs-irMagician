@@ -34,7 +34,7 @@ var fs = require('fs'),
 arduino = new SerialPort('/dev/ttyACM0');
 irMagician = new IRMagician('/dev/ttyACM1');//MEMO:arduinoと同時に繋いだ時
 
-if(process.argv[2] && process.argv[2] && process.argv[2]){
+if(process.argv[2] && process.argv[3] && process.argv[4]){
   mailer = new Mailer(process.argv[2], process.argv[3], process.argv[4]);
   mailer.send('doorSensor.jsが起動しました');
 }else{
@@ -77,3 +77,5 @@ arduino.on('open', function(){
         console.log(color.warning('arduino is closed'));
     });
 });
+//FIXME:ドアの開け閉めだけで判定するとめんどい
+//TODO:メール送信しな区ていい時の判定追加

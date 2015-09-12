@@ -13,8 +13,9 @@
     </script>
 
     <script>
+        var raspiIP = 'http://192.168.11.10:2056';
         $(function() {
-            var socket = io.connect('http://192.168.11.11:2056');
+            var socket = io.connect(raspiIP);
             socket.on('connect', function() {
                 $('#condition').text('socket connected');
             });

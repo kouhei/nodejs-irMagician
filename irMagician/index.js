@@ -27,7 +27,7 @@ var IRMagician = function (portName) {
     var self = this;
 
   this.portName = portName || '/dev/ttyACM0';//TODO:/dev/ttyACM1
-  console.log(this.color.info('portName is ' + this.portName));
+  console.log(this.color.info('irMagician portName is ' + this.portName));
 
 
 
