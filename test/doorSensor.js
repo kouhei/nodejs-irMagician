@@ -1,7 +1,8 @@
 /*
 
-引数として、メールの受信者のアドレス,メール送信者のアドレス,メール送信者のパスワードがいる
-※メールは両方ともgmailのみ可
+コマンドライン引数として、メールの受信者のアドレス,メール送信者のアドレス,メール送信者のパスワードがいる
+example: node yourGmailAddress@gmail.com subitterGmailAddress@gmail.com submitter'sPassword
+NOTE:メールは両方ともgmailのみ可
 
 */
 

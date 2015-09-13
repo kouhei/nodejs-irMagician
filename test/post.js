@@ -1,3 +1,7 @@
+/*
+post通信でON,OFFを制御
+*/
+
 var fs = require('fs'),
     color = require('../src/color'),
     http = require('http'),
