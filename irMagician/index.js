@@ -9,49 +9,19 @@ var IRMagician = function (portName) {
 
     this.serial = require('serialport');
     this.SerialPort = this.serial.SerialPort;
-    //this.sp,
 
     this.isOpened = false; //ポート開いているかどうか
     this.isFinished = false; //使っているかどうか
     this.isOpening = false; //ポート開けようとしているかどうか(最初はisOpenedがfalseなので,非同期の都合上falseに)
 
-    //this.copyTimer,
-    //this.playTimer,
-    //this.LplayTimer,
-    //this.saveTimer,
-
-      //cmdTimer,
-
-    //this.tempTimer,
-
     var self = this;
 
-  this.portName = portName || '/dev/ttyACM0';//TODO:/dev/ttyACM1
+  this.portName = portName || '/dev/ttyACM0';//MEMO:/dev/ttyACM1
   console.log(this.color.info('irMagician portName is ' + this.portName));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 };
 
-
-IRMagician.prototype.errorEmitter = function (err, position) { //MEMO:position => エラーが起こった状況 ex) 'writing p\\r\\n'
+//MEMO: position: エラーが起こった状況 (ex: 'writing p\\r\\n')
+IRMagician.prototype.errorEmitter = function (err, position) {
   var self = this;
   throw this.color.error('err (' + position + '):' + err);
 };
@@ -89,13 +59,14 @@ IRMagician.prototype.debug = function (word, debugable) {
   }
 };
 
-
+//値の誤差が大きいため非推奨(自分のものだけ？)
 IRMagician.prototype.temp = function () {
   var self = this;
   if (!this.isOpening && !this.isOpened) {
     this.openSerial();
   }
   if (this.isFinished) {
+    console.log(this.color.error('temp method is deprecated because the error of this value is large!!'));
     var re = /[0-1][0-9][0-9][0-9]/,
         endRe = /OK/;
     this.isFinished = false;
@@ -417,6 +388,9 @@ IRMagician.prototype.save = function (fileName, overwritable, debug) {
                 if (POS.pos === 0) {
 
                   self.sp.write('b,' + POS.bank + '\r\n', function () {
+                    if (err) {
+                      self.errorEmitter(err, 'writing b,' + POS.bank + '\\n\\r')
+                    }
                     self.sp.drain(function () {
                       self.sp.write('d,' + POS.pos + '\n\r', function (err) {
                         if (err) {
@@ -526,6 +500,5 @@ module.exports = IRMagician;
 //irMagician.Lplay('./test.json');
 //irMagician.temp();
 
-//FUTURE:sp.write()でのerrがあった時のエラーハンドリングしてるか確認
 //FIXME:errorEmitterでthorwすると,エラーのあった行数がerrorEmitterのあるところになってしまう
 //FIXME:3つのメソッドを使うと、setInterval()のコールされるタイミングの関係で,2番目と3番目が入れ替わることがある
