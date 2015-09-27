@@ -65,7 +65,6 @@ IRMagician.prototype.temp = function () {
     endRe = /OK/;
   console.log(this.color.error('temp method is deprecated because the error of this value is large!!'));
 
-
   self.sp.write('t\r\n', function (err) {
     if (err) {
       self.errorEmitter(err, 'writing t\\r\\n');
@@ -80,14 +79,13 @@ IRMagician.prototype.temp = function () {
       if (dataVal) { //温度の値の時
         self.debug(dataVal, self.debug);
         degree = ((5 / 1024 * dataVal) - 0.4) / (19.53 / 1000);
-        simDegree = ((25 * dataVal) - 2048) / 100;
+        simDegree = ((25 * dataVal) - 2048) / 100;//上の式を大雑把にした式
         self.debug(self.color.info('degree (c): ' + degree), self.debug);
         console.log(self.color.info('simDegree (c): ' + simDegree));
       }
       if (endRe.test(val)) { //OKのとき
         //self.sp.close();//closeした時にisFiishedがtrueになるため、消してはいけない
         console.log(self.color.info('temp end'));
-
       }
     });
   });
@@ -155,6 +153,7 @@ IRMagician.prototype.play = function (callback) {
 
 //end: 処理が終わった時によばれる関数
 IRMagician.prototype.Lplay = function (fileName, end) {
+  'use strict';
   var jsonData,
     recNumber,
     rawX,
@@ -174,7 +173,7 @@ IRMagician.prototype.Lplay = function (fileName, end) {
 
   console.log('reading jsonData...');
   try {
-    jsonData = require(fileName);
+    jsonData = require(fileName);//fileNameなかったらエラー
     recNumber = jsonData.data.length;
     rawX = jsonData.data;
     postScale = jsonData.postscale;
@@ -183,10 +182,12 @@ IRMagician.prototype.Lplay = function (fileName, end) {
   }
 
   for (i = 0; i < recNumber; i++) {
-    position.push({
-      bank: Math.floor(i / 64),
-      pos: i % 64
-    });
+    position.push(
+      {
+        bank: Math.floor(i / 64),
+        pos: i % 64
+      }
+    );
   }
 
   this.sp.write('n,' + recNumber + '\r\n', function (err) {
@@ -195,43 +196,37 @@ IRMagician.prototype.Lplay = function (fileName, end) {
     }
 
     self.sp.drain(function () {
-
       self.sp.write('k,' + postScale + '\r\n', function (err) {
         if (err) {
           self.errorEmitter(err, 'writing k,' + postScale + '\\r\\n');
         }
+
         self.sp.drain(function () {
-
           self.async.each(position, function (POS, callback) {
-            var number = POS.bank * 64 + POS.pos;
-            if (POS.pos === 0) {
+            var number = POS.bank * 64 + POS.pos,
+                write = function () {//TODO:名前わかりやすく
+                  self.sp.drain(function () {
+                    self.sp.write('w,' + POS.pos + ',' + rawX[number] + '\n\r', function (err) {
+                      if (err) {
+                        self.errorEmitter(err, 'writing w,' + POS.pos + ',' + rawX[number] + '\\r\\n');
+                      }
+                      self.sp.drain(function () {
+                        callback(null);
+                      });
+                    });
+                  });
+                };
 
+            if (POS.pos === 0) {
               self.sp.write('b,' + POS.bank + '\r\n', function (err) {
+                //};//NOTE:これ何？
                 if (err) {
                   self.errorEmitter(err, 'writing b,' + POS.bank + '\\r\\n');
                 }
-
-                self.sp.drain(function () {
-                  self.sp.write('w,' + POS.pos + ',' + rawX[number] + '\n\r', function (err) {
-                    if (err) {
-                      self.errorEmitter(err, 'writing w,' + POS.pos + ',' + rawX[number] + '\\r\\n');
-                    }
-                    self.sp.drain(function () {
-                      callback(null);
-                    });
-                  });
-                });
-
+                 write();
               });
             } else {
-              self.sp.write('w,' + POS.pos + ',' + rawX[number] + '\n\r', function (err) {
-                if (err) {
-                  self.errorEmitter(err, 'writing w,' + POS.pos + ',' + rawX[number] + '\\r\\n');
-                }
-                self.sp.drain(function () {
-                  callback(null);
-                });
-              });
+              write();
             }
           }, function (err) {
             if (err) {
@@ -240,26 +235,22 @@ IRMagician.prototype.Lplay = function (fileName, end) {
             console.log('each all done.');
 
             self.sp.write('p\r\n', function (err) {
+              var judgeEnd = function(){
+                self.sp.once('data', function (data) {
+                  console.log('data received(Lplay):' + data);
+                  if (data + '' === '... Done !\r\n' || data + '' === ' Done !\r\n') {
+                    console.log('Lplay end');
+                    self.end();
+                  } else { //終了じゃなかった時
+                    judgeEnd();
+                  }
+                });
+              };
+
               if (err) {
                 self.errorEmitter(err, 'writing p\\r\\n');
               }
-              self.sp.once('data', function (data) {
-                console.log('data received(Lplay):' + data);
-                if (data + '' === '... Done !\r\n' || data + '' === ' Done !\r\n') {
-                  console.log('Lplay end');
-                  self.end();
-
-                } else { //終了じゃなかった時
-                  self.sp.once('data', function (data2) { //もう一回lintener登録
-                    console.log('data received(Lplay):' + data2);
-                    if (data2 + '' === '... Done !\r\n' || data2 + '' === ' Done !\r\n') {
-                      console.log('Lplay end');
-                      self.end();
-
-                    } //NOTE:最大でも2回しか呼ばれない?からここでのelse{}は無くていい?
-                  });
-                }
-              });
+              judgeEnd();
             });
           });
         });
@@ -286,6 +277,7 @@ IRMagician.prototype.save = function (fileName, overwritable, debug) {
     throw 'missing file name';
   }
   //CHANGE:ファイル存在確認(上書きするかどうか)変更したので要確認
+
   this.fileExistCheck(fileName, function (filePath) {
     if (filePath && overwritable === false) {
       throw this.color.error(filePath + ' exist (overwritable is false)');
@@ -310,11 +302,13 @@ IRMagician.prototype.save = function (fileName, overwritable, debug) {
             postScale = postScale / 1;
             console.log('data received(save) postScale:' + recNumber);
             for (i = 0; i < recNumber; i++) {
-              array.push({
-                bank: Math.floor(i / 64),
-                pos: i % 64,
-                judge: true
-              });
+              array.push(
+                {
+                  bank: Math.floor(i / 64),
+                  pos: i % 64//,
+                  //judge: true
+                }
+              );
             }
             self.async.each(array, function (POS, eachCallback) {
               var index,
@@ -352,7 +346,7 @@ IRMagician.prototype.save = function (fileName, overwritable, debug) {
                           rawX[index] = xdata;
                         }
                         self.debug('rawX[' + index + '] : ' + rawX[index] + '\n', debug);
-                        POS.judge = false;
+                        //POS.judge = false;
 
                         eachCallback();
 
@@ -386,14 +380,11 @@ IRMagician.prototype.save = function (fileName, overwritable, debug) {
                       rawX[index] = xdata;
                     }
                     self.debug('rawX[' + index + '] : ' + rawX[index] + '\n', debug);
-                    POS.judge = false;
-
+                    //POS.judge = false;
                     eachCallback(null, rawX);
-
                   });
                 });
               }
-
             }, function (err) {
               var jsonData = {};
               if (err) {
@@ -409,7 +400,6 @@ IRMagician.prototype.save = function (fileName, overwritable, debug) {
               //FUTURE:ファイル上書きするしない
               self.fs.writeFileSync(fileName, JSON.stringify(jsonData));
               //fs.writeFileSync(fileName, JSON.stringify(jsonData, null, '    '));//NOTE:こっちの方が見やすい?
-              self.sp.close();//closeした時にisFiishedがtrueになるため、消してはいけない
               console.log('save end');
 
             });
