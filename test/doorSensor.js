@@ -45,15 +45,16 @@ if(process.argv[2] && process.argv[3] && process.argv[4]){
 
 lightJudge = function(){//FIXME:引数にcountとしてcloseCountをインクリメントすると挙動がおかしい
   var dataName = '';
-  closeCount++;
-  //console.log('count' + closeCount);
-  if(closeCount % 2 === 1){
+  lightJudge.closeCount++;
+  //console.log('count' + lightJudge.closeCount);
+  if(lightJudge.closeCount % 2 === 1){
     dataName = '../json/lightOn.json';
   }else{
     dataName = '../json/lightOff.json';
   }
   irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
 };
+lightJudge.closeCount = 0;
 
 arduino.on('open', function(){
     console.log(color.info('arduino is opened'));
