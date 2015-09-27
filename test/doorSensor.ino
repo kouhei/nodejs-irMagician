@@ -1,19 +1,19 @@
 void setup(){
     Serial.begin(9600);
-    pinMode(13, OUTPUT);
+    //pinMode(13, OUTPUT);
     pinMode(2, INPUT_PULLUP);
-    digitalWrite(13, 1);
+    //digitalWrite(13, 1);
 }
 
 int lastSwitchVal = 0;
-int lastButtonVal = 0;
+//int lastButtonVal = 0;
 
 int count = 0;
-int judge = 1;//on:1,off:0
+//int judge = 1;//on:1,off:0
 
 void loop() {
     int switchVal;//doorSensor
-    int buttonVal;
+    /*int buttonVal;
 
     buttonVal = digitalRead(4);
     if(buttonVal == 1 && buttonVal != lastButtonVal){
@@ -26,10 +26,10 @@ void loop() {
         }
         count++;
     }
-    lastButtonVal = buttonVal;
+    lastButtonVal = buttonVal;*/
 
     switchVal = digitalRead(2);
-    if(judge == 1){
+    //if(judge == 1){
         if (switchVal != lastSwitchVal){
             if (switchVal == 0){//ドアが閉まった
                 Serial.print("0\n");
@@ -38,7 +38,7 @@ void loop() {
                 Serial.print("1\n");
             }
         }
-    }
+    //}
     lastSwitchVal = switchVal;
 
     Serial.flush();
