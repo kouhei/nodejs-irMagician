@@ -82,6 +82,8 @@ arduino.on('open', function(){
 //FIXME:ドアの開け閉めだけで判定するとめんどい?
 //TODO:メール送信しなくていい時の判定追加
 
+
+
 var http = require('http'),
   server = {};
 

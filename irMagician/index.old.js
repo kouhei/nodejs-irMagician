@@ -1,6 +1,6 @@
 //HACK:
 //FIXME:errorEmitterでthorwすると,エラーのあった行数がerrorEmitterのあるところになってしまう
-//FIXME:3つのメソッドを使うと、setInterval()のコールされるタイミングの関係で,2番目と3番目が入れ替わることがある
+//OPTION:3つ処理同時に発行しても受け付けるように？
 var console = window.console;
 var IRMagician = function (portName) {
   'use strict';
