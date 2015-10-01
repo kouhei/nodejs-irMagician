@@ -74,6 +74,7 @@ arduino.on('open', function(){
             if (mailer) { mailer.send('ドアが開きました'); }
             lightJudge();
             break;
+          case '' : break;
           default:console.log(color.error('error'));
         }
     });
