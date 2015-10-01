@@ -149,8 +149,10 @@ function send(judge){
     word = judge;
     playDataName = '../json/lightOn.json';
   }else{
-    word = 'OFF';
-    playDataName = '../json/lightOff.json';
+    if(judge==='OFF'){
+      word = 'OFF';
+      playDataName = '../json/lightOff.json';
+    }
   }
 
   console.log(color.safe('<'+now()+'> light'+word));
