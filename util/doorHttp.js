@@ -83,7 +83,6 @@ arduino.on('open', function(){
         console.log(color.warning('arduino is closed'));
     });
 });
-//FIXME:ドアの開け閉めだけで判定するとめんどい?
 //TODO:メール送信しなくていい時の判定追加
 
 
@@ -136,8 +135,8 @@ console.log('lidten at '+port);
 
 function onPost(data){
   switch (data+''){
-    case 'lightOFF': send('OFF');break;//dataIsOFF();break;
-    case 'lightON' : send('ON');break;//dataIsON();break;
+    case 'lightOFF': send('OFF');break;
+    case 'lightON' : send('ON');break;
     default        : console.log('data is '+data);
   }
 }
