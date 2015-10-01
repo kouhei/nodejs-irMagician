@@ -183,3 +183,4 @@ function dateFormatter(array){
   return res;
 }
 //FIXME:lightOffの時だけ応答ない時あり
+//TODO:扉のセンサで、ライト点けたり消したりしなくていい時あるのでその判定
