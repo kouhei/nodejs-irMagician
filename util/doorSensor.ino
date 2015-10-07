@@ -8,7 +8,7 @@ void setup(){
 int lastSwitchVal = 0;
 //int lastButtonVal = 0;
 
-int count = 0;
+int doorCount = 0;
 //int judge = 1;//on:1,off:0
 
 void loop() {
@@ -17,14 +17,14 @@ void loop() {
 
     buttonVal = digitalRead(4);
     if(buttonVal == 1 && buttonVal != lastButtonVal){
-        if(count%2 == 0){
+        if(doorCount%2 == 0){
             judge = 1;
             digitalWrite(13, 1);
         }else{
             judge = 0;
             digitalWrite(13, 0);
         }
-        count++;
+        doorCount++;
     }
     lastButtonVal = buttonVal;*/
 
