@@ -48,7 +48,7 @@ void loop() {
     lightCount++;
     if(lightCount > 3000){
         lightVal = analogRead(0)/4;
-        Serial.print("{lightSensor: ");
+        Serial.print("{\"lightSensor\": ");
         Serial.print(lightVal);//センサの値
         Serial.print("}\n");
 
