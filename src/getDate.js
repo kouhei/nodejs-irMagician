@@ -1,11 +1,11 @@
 var GetDate = function () {
   'use strict';
 
-  this.dateFormat = function (date) {
-    if(date < 10){
-      return '0'+date;
+  this.dateFormat = function (num) {
+    if(num < 10){
+      return '0'+num;
     }else{
-      return date;
+      return num;
     }
   };
 };
@@ -22,7 +22,7 @@ GetDate.prototype = {
 
     var day = function(){
       var weekDayJP = ["日","月","火","水","木","金","土"];
-      return this.dateFormat(weekDayJP[now.getDay()]);
+      return weekDayJP[now.getDay()];
     };
 
     var date = this.dateFormat(now.getDate());
@@ -35,7 +35,7 @@ GetDate.prototype = {
 
     var milliseconds = this.dateFormat(now.getMilliseconds());
 
-    return year + ' ' + month + '/' + date + ' ' + hours + ':' + minutes;
+    return year + ' ' + month + '/' + date + ' ' + hours + ':' + minutes + ':' + seconds;
   }
 
 };
