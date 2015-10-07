@@ -33,8 +33,9 @@ var fs = require('fs'),
 
 
 arduino = new SerialPort('/dev/ttyACM0');
-irMagician = new IRMagician('/dev/ttyACM1');//MEMO:arduinoと同時に繋いだ時
+irMagician = new IRMagician('/dev/ttyACM1');//arduinoと同時に繋いだ時
 
+//mailerのユーザー名などが与えられた時
 if(process.argv[2] && process.argv[3] && process.argv[4]){
   mailer = new Mailer(process.argv[2], process.argv[3], process.argv[4]);
   mailer.send('doorSensor.jsが起動しました');
@@ -82,5 +83,5 @@ arduino.on('open', function(){
     });
 });
 //TODO:メール送信しなくていい時の判定追加
-//FIXME:lightOffの時だけ応答ない時あり
-//TODO:扉のセンサで、ライト点けたり消したりしなくていい時あるのでその判定
+//FIXME:lightOffの時だけ応答ない時あり <=プログラムの問題でない可能性
+//TODO:扉のセンサいるかいらないかの判定
