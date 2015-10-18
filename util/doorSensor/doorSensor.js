@@ -11,10 +11,10 @@ process.on('exit', function () {
 });
 
 var fs = require('fs'),
-    color = require('../src/color'),
+    color = require('../../src/color'),
     //http = require('http'),
     //server = {},
-    IRMagician = require('../irMagician'),
+    IRMagician = require('../../irMagician'),
     irMagician = {},
     port = '',
 
@@ -24,11 +24,11 @@ var fs = require('fs'),
     closeCount = 0,
     lightJudge = function(){},//つけるか消すか
 
-    Mailer = require('../src/mailer'),
+    Mailer = require('../../src/mailer'),
     mailer,
     mailerPass,
 
-    GetDate = require('../src/getDate.js'),
+    GetDate = require('../../src/getDate.js'),
     getDate = new GetDate();
 
 
@@ -48,9 +48,9 @@ lightJudge = function(){//FIXME:引数にcountとしてcloseCountをインクリ
   lightJudge.closeCount++;
   //console.log('count' + lightJudge.closeCount);
   if(lightJudge.closeCount % 2 === 1){
-    dataName = '../json/lightOn.json';
+    dataName = '../../json/lightOn.json';
   }else{
-    dataName = '../json/lightOff.json';
+    dataName = '../../json/lightOff.json';
   }
   irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
 };

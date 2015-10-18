@@ -42,5 +42,5 @@ void loop() {
     lastSwitchVal = switchVal;
 
     Serial.flush();
-    delay(100);
+    delay(10);
 }
