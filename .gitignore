@@ -6,3 +6,4 @@ nohup.out
 arduino.js
 setting2.js
 doorSensor-five.js
+/node_modules/*
