@@ -12,8 +12,6 @@ process.on('exit', function () {
 
 var fs = require('fs'),
     color = require('../../src/color'),
-    //http = require('http'),
-    //server = {},
     IRMagician = require('../../irMagician'),
     irMagician = {},
     port = '',
@@ -37,7 +35,7 @@ irMagician = new IRMagician('/dev/ttyACM1');//MEMO:arduinoと同時に繋いだ�
 
 if(process.argv[2] && process.argv[3] && process.argv[4]){
   mailer = new Mailer(process.argv[2], process.argv[3], process.argv[4]);
-  mailer.send('doorSensor.jsが起動しました');
+  mailer.send('Starting doorSensor.js');
 }else{
   console.log(color.error('mailer is not defined!'));
 }
@@ -68,7 +66,7 @@ arduino.on('open', function(){
           case '1\n' :
           case '1' :
             console.log(color.info('[' + getDate.getTime()+'] door is opened'));
-            if (mailer) { mailer.send('ドアが開きました'); }
+            if (mailer) { mailer.send('Door is opened.'); }
             lightJudge();
             break;
           default:console.log(color.error('error'));
