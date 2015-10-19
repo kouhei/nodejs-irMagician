@@ -8,8 +8,11 @@ void setup(){
 int lastSwitchVal = 0;
 //int lastButtonVal = 0;
 
-int count = 0;
+int doorCount = 0;
 //int judge = 1;//on:1,off:0
+
+int lightCount = 0;
+int lightVal = 0;
 
 void loop() {
     int switchVal;//doorSensor
@@ -17,29 +20,40 @@ void loop() {
 
     buttonVal = digitalRead(4);
     if(buttonVal == 1 && buttonVal != lastButtonVal){
-        if(count%2 == 0){
+        if(doorCount%2 == 0){
             judge = 1;
             digitalWrite(13, 1);
         }else{
             judge = 0;
             digitalWrite(13, 0);
         }
-        count++;
+        doorCount++;
     }
     lastButtonVal = buttonVal;*/
 
     switchVal = digitalRead(2);
     //if(judge == 1){
-        if (switchVal != lastSwitchVal){
-            if (switchVal == 0){//ドアが閉まった
-                Serial.print("0\n");
-            }
-            else {//ドアが開いた
-                Serial.print("1\n");
-            }
+    if (switchVal != lastSwitchVal){
+        if (switchVal == 0){//ドアが閉まった
+            Serial.print("0\n");
         }
+        else {//ドアが開いた
+            Serial.print("1\n");
+        }
+    }
     //}
     lastSwitchVal = switchVal;
+
+    //lightSensor
+    lightCount++;
+    if(lightCount > 3000){
+        lightVal = analogRead(0)/4;
+        Serial.print("{\"lightSensor\": ");
+        Serial.print(lightVal);//センサの値
+        Serial.print("}\n");
+
+        lightCount = 0;
+    }
 
     Serial.flush();
     delay(100);

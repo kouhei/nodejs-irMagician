@@ -1,0 +1,25 @@
+{
+  "name": "irMagician",
+  "version": "0.0.1",
+  "description": "you can use [irMagician](http://www.omiya-giken.com/?cat=13) with Node.js",
+  "main": "irMagician/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fai1618/irMT.git"
+  },
+  "author": {
+      "name": "Kouhei Yamada",
+      "email": "fai1.618033@gmail.com"
+  },
+  "license": {
+      "type": "MIT",
+      "url": "https://raw.githubusercontent.com/fai1618/nodejs-irMagician/master/LICENCE.txt"
+  },
+  "bugs": {
+    "url": "https://github.com/fai1618/irMT/issues"
+  },
+  "homepage": "https://github.com/fai1618/irMT",
+}
