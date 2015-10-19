@@ -11,15 +11,36 @@
     "url": "https://github.com/fai1618/irMT.git"
   },
   "author": {
-      "name": "Kouhei Yamada",
-      "email": "fai1.618033@gmail.com"
+    "name": "Kouhei Yamada",
+    "email": "fai1.618033@gmail.com"
   },
   "license": {
-      "type": "MIT",
-      "url": "https://raw.githubusercontent.com/fai1618/nodejs-irMagician/master/LICENCE.txt"
+    "type": "MIT",
+    "url": "https://raw.githubusercontent.com/fai1618/nodejs-irMagician/master/LICENCE.txt"
   },
   "bugs": {
-    "url": "https://github.com/fai1618/irMT/issues"
+    "url": "https://github.com/fai1618/irMT/issues",
+	"email": "fai1.618033@gmail.com"
   },
   "homepage": "https://github.com/fai1618/irMT",
+  "keywords":"",
+  "dependencies": {
+    "async": "^1.4.2",
+    "serialport": "^2.0.1"
+  },
+  "devDependencies": {
+    "forever-monitor": "^1.7.0",
+	"nodemailer": "0.7.x"
+  },
+  "directories": {
+    "bin": "",
+	"example": "",
+	"doc": "./README.md",
+	"lib": "",
+	"man": ""
+  }
+  "engines": {
+    "node": ""
+  }
 }
+
