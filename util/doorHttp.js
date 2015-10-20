@@ -24,7 +24,6 @@ var fs = require('fs'),
 
     Mailer = require('../src/mailer'),
     mailer,
-    mailerPass,
 
     getPost = require('../src/GetPost'),
 
@@ -43,7 +42,7 @@ if(process.argv[2] && process.argv[3] && process.argv[4]){
   console.log(color.error('mailer is not defined!'));
 }
 
-
+//onかoffかの判定
 lightJudge = function(){
   var dataName = '';
   if(!lightJudge.closeCount){
@@ -82,6 +81,3 @@ arduino.on('open', function(){
         console.log(color.warning('arduino is closed'));
     });
 });
-//TODO:メール送信しなくていい時の判定追加
-//FIXME:lightOffの時だけ応答ない時あり <=プログラムの問題でない可能性
-//TODO:扉のセンサいるかいらないかの判定
