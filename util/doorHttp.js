@@ -24,7 +24,6 @@ var fs = require('fs'),
 
     Mailer = require('../src/mailer'),
     mailer,
-    mailerPass,
 
     getPost = require('../src/GetPost'),
 
@@ -38,12 +37,12 @@ irMagician = new IRMagician('/dev/ttyACM1');//arduinoと同時に繋いだ時
 //mailerのユーザー名などが与えられた時
 if(process.argv[2] && process.argv[3] && process.argv[4]){
   mailer = new Mailer(process.argv[2], process.argv[3], process.argv[4]);
-  mailer.send('doorSensor.jsが起動しました');
+  mailer.send('Starting doorHttp.js');
 }else{
   console.log(color.error('mailer is not defined!'));
 }
 
-
+//onかoffかの判定
 lightJudge = function(){
   var dataName = '';
   if(!lightJudge.closeCount){
@@ -70,7 +69,7 @@ arduino.on('open', function(){
           case '1\n' :
           case '1' :
             console.log(color.info('[' + getDate.getTime()+'] door is opened'));
-            if (mailer) { mailer.send('ドアが開きました'); }
+            if (mailer) { mailer.send('Door is opened.'); }
             lightJudge();
             break;
           case '' : break;
@@ -82,6 +81,3 @@ arduino.on('open', function(){
         console.log(color.warning('arduino is closed'));
     });
 });
-//TODO:メール送信しなくていい時の判定追加
-//FIXME:lightOffの時だけ応答ない時あり <=プログラムの問題でない可能性
-//TODO:扉のセンサいるかいらないかの判定
