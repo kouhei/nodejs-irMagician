@@ -43,16 +43,35 @@ if(process.argv[2] && process.argv[3] && process.argv[4]){
 }
 
 //onかoffかの判定
-lightJudge = function(){
+//boool : ONかOFF(optional)
+lightJudge = function(bool){
   var dataName = '';
   if(!lightJudge.closeCount){
     lightJudge.closeCount = 0;
   }
   lightJudge.closeCount++;
-  if(lightJudge.closeCount % 2 === 1){
-    dataName = '../json/lightOn.json';
+
+  if(bool){
+
+    if(bool === 'ON'){
+      dataName = '../json/lightOn.json';
+      if(lightJudge.closeCount % 2 !== 1){
+        lightJudge.closeCount++;
+      }
+    }else{
+      if(bool === 'OFF'){
+        dataName = '../json/lightOff.json';
+        if(lightJudge.closeCount % 2 !== 0){
+          lightJudge.closeCount++;
+        }
+      }
+    }
   }else{
-    dataName = '../json/lightOff.json';
+    if(lightJudge.closeCount % 2 === 1){
+      dataName = '../json/lightOn.json';
+    }else{
+      dataName = '../json/lightOff.json';
+    }
   }
   irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
 };
@@ -82,4 +101,4 @@ arduino.on('open', function(){
     });
 });
 
-getPost(irMagician, lightJudge);
+getPost(irMagician, lightJudge, 8080);

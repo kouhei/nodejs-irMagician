@@ -1,9 +1,10 @@
 /*
-irMagician : 必ず必要
+irMagician : (必ず必要)
+lightJudge : 信号を送信する関数(必ず必要)
 port : defaultは8080
 
 */
-var getPost = function (irMagician, port) {
+var getPost = function (irMagician, lightJudge, port) {
   'use strict';
   var color = require('./color'),
     GetDate = require('./getDate.js'),
@@ -39,13 +40,15 @@ var getPost = function (irMagician, port) {
       case 'GET':
         console.log('req: ' + req.url);
         if(req.url === '/on'){
-          send('ON');
+          lightJudge('ON');
+          //send('ON');
           res.writeHead(200, {'Content-Type':'text/html'});
           res.end('<h1>ON</h1>');
           break;
         } else {
           if(req.url === '/off'){
-            send('OFF');
+            lightJudge('OFF');
+            //send('OFF');
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.end('<h1>OFF</h1>');
             break;
@@ -62,13 +65,13 @@ var getPost = function (irMagician, port) {
 
   function onPost(data){
     switch (data+''){
-      case 'lightOFF': send('OFF');break;
-      case 'lightON' : send('ON');break;
+      case 'lightOFF': lightJudge('OFF');break;
+      case 'lightON' : lightJudge('ON');break;
       default        : console.log('(getPost.js) onPostData is '+data);
     }
   }
 
-  function send(judge){
+  /*function send(judge){
     var word = '',
         playDataName = '';
 
@@ -84,7 +87,7 @@ var getPost = function (irMagician, port) {
 
     console.log(color.safe('<' + getDate.getTime() + '> light' + word));
     irMagician.Lplay(playDataName, function(){console.log('(getPost.js) Lplay end callback');});
-  }
+  }*/
 
 };
 
