@@ -31,8 +31,8 @@ var fs = require('fs'),
     getDate = new GetDate();
 
 
-arduino = new SerialPort('/dev/ttyACM0');
-irMagician = new IRMagician('/dev/ttyACM1');//arduinoと同時に繋いだ時
+arduino = new SerialPort('/dev/ttyACM1');
+irMagician = new IRMagician('/dev/ttyACM0');//arduinoと同時に繋いだ時
 
 //mailerのユーザー名などが与えられた時
 if(process.argv[2] && process.argv[3] && process.argv[4]){
