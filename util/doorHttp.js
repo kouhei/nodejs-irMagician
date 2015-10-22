@@ -81,3 +81,5 @@ arduino.on('open', function(){
         console.log(color.warning('arduino is closed'));
     });
 });
+
+getPost(irMagician);
