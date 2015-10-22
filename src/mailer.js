@@ -42,7 +42,7 @@ SendMail.prototype = {
       mailOptions = {
         from: this.myAddress,
         to: this.toAddress,
-        subject: 'doorSensorからの通知',
+        subject: 'Inform from doorSensor',
         html: '<p>' + message + '</p>'
       };
     // メールの送信
@@ -52,7 +52,7 @@ SendMail.prototype = {
         console.log(err);
       } else {
         // 送信に成功したとき
-        console.log(self.color.safe('send mail to ' + self.toAddress));
+        console.log(self.color.safe('sending mail to ' + self.toAddress));
       }
       // SMTPの切断
       transporter.close();
