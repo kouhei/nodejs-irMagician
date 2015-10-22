@@ -20,7 +20,7 @@
   },
   "bugs": {
     "url": "https://github.com/fai1618/irMT/issues",
-	"email": "fai1.618033@gmail.com"
+  "email": "fai1.618033@gmail.com"
   },
   "homepage": "https://github.com/fai1618/irMT",
   "keywords":"",
@@ -30,15 +30,15 @@
   },
   "devDependencies": {
     "forever-monitor": "^1.7.0",
-	"nodemailer": "0.7.x"
+  "nodemailer": "0.7.x"
   },
   "directories": {
     "bin": "",
-	"example": "",
-	"doc": "./README.md",
-	"lib": "",
-	"man": ""
-  }
+  "example": "",
+  "doc": "./README.md",
+  "lib": "",
+  "man": ""
+  },
   "engines": {
     "node": ""
   }
