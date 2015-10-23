@@ -25,7 +25,8 @@ var fs = require('fs'),
     Mailer = require('../src/mailer'),
     mailer,
 
-    getPost = require('../src/GetPost'),
+    GetPost = require('../src/GetPost'),
+    getPost,
 
     GetDate = require('../src/getDate'),
     getDate = new GetDate();
@@ -101,4 +102,36 @@ arduino.on('open', function(){
     });
 });
 
-getPost(irMagician, lightJudge, 8080);
+
+var httpServer = new GetPost();
+var dp = {};
+
+dp.post = function(data, res){
+  switch (data){
+    case 'lightOFF': lightJudge('OFF');break;
+    case 'lightON' : lightJudge('ON');break;
+    default        : console.log('onPostData is '+data);
+  }
+  res.end(data);
+};
+
+
+dp.get = function(req, res){
+  if(req.url === '/on'){
+    lightJudge('ON');
+    res.writeHead(200, {'Content-Type':'text/html'});
+    res.end('<h1>ON</h1>');
+  } else {
+    if(req.url === '/off'){
+      lightJudge('OFF');
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>OFF</h1>');
+    } else {
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>ON? OFF?</h1>');
+    }
+  }
+};
+
+httpServer.createServer(dp);
+httpServer.startServer(8080);
