@@ -1,8 +1,9 @@
 /python/*
 /sampleData/*
 http.js
-save.old.js
-nohup.out
+*.old*
+*.out
+*.log
 arduino.js
 setting2.js
 doorSensor-five.js
