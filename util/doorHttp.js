@@ -30,7 +30,7 @@ var fs = require('fs'),
 
     GetDate = require('../src/getDate'),
     getDate = new GetDate(),
-    doorSensor;//doorSensorの判定の有効、無効を切り替え
+    doorSensor = 'on';//doorSensorの判定の有効、無効を切り替え
 
 
 arduino = new SerialPort('/dev/ttyACM1');
@@ -134,12 +134,12 @@ dp.get = function(req, res){
       res.end('<h1>OFF</h1>');
       break;
     case '/sleep':
-      doorSensor = 'on';
+      doorSensor = 'off';
       res.writeHead(200, {'Content-Type': 'text/html'});
-      res.end('<h1>doorSleepON</h1>');
+      res.end('<h1>doorSleep</h1>');
       break;
     case '/wakeup':
-      doorSensor = 'of';
+      doorSensor = 'on';
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<h1>doorWakeUp</h1>');
     default :
