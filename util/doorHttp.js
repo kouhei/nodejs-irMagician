@@ -98,6 +98,7 @@ arduino.on('open', function(){
             if (mailer) { mailer.send('Door is opened.'); }
             lightJudge();
             break;
+          case '\n':
           case '' : break;
           default:console.log(color.error('error'));
         }
