@@ -51,10 +51,9 @@ lightJudge = function(bool){
     if(!lightJudge.closeCount){
       lightJudge.closeCount = 0;
     }
-    lightJudge.closeCount++;
 
     if(bool){//httpリクエストで判定
-
+      lightJudge.closeCount++;
       if(bool === 'ON'){
         dataName = '../json/lightOn.json';
         if(lightJudge.closeCount % 2 !== 1){
@@ -68,18 +67,20 @@ lightJudge = function(bool){
           }
         }
       }
+      irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
     }else{//doorSensorで判定
       if(doorSensor === 'on'){
+        lightJudge.closeCount++;
         if(lightJudge.closeCount % 2 === 1){
           dataName = '../json/lightOn.json';
         }else{
           dataName = '../json/lightOff.json';
         }
+        irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
       }else{
         console.log('doorSensor is sleeping');
       }
     }
-    irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
 };
 
 arduino.on('open', function(){
@@ -142,6 +143,7 @@ dp.get = function(req, res){
       doorSensor = 'on';
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<h1>doorWakeUp</h1>');
+      break;
     default :
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<h1>ON? OFF?</h1>');
