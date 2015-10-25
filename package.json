@@ -14,16 +14,13 @@
     "name": "Kouhei Yamada",
     "email": "fai1.618033@gmail.com"
   },
-  "license": {
-    "type": "MIT",
-    "url": "https://raw.githubusercontent.com/fai1618/nodejs-irMagician/master/LICENCE.txt"
-  },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/fai1618/irMT/issues",
   "email": "fai1.618033@gmail.com"
   },
   "homepage": "https://github.com/fai1618/irMT",
-  "keywords":"",
+  "keywords":["irMagician", "IR"],
   "dependencies": {
     "async": "^1.4.2",
     "serialport": "^2.0.1"
