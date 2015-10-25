@@ -29,7 +29,8 @@ var fs = require('fs'),
     getPost,
 
     GetDate = require('../src/getDate'),
-    getDate = new GetDate();
+    getDate = new GetDate(),
+    doorSensor;//doorSensorの判定の有効、無効を切り替え
 
 
 arduino = new SerialPort('/dev/ttyACM1');
@@ -46,35 +47,39 @@ if(process.argv[2] && process.argv[3] && process.argv[4]){
 //onかoffかの判定
 //boool : ONかOFF(optional)
 lightJudge = function(bool){
-  var dataName = '';
-  if(!lightJudge.closeCount){
-    lightJudge.closeCount = 0;
-  }
-  lightJudge.closeCount++;
+    var dataName = '';
+    if(!lightJudge.closeCount){
+      lightJudge.closeCount = 0;
+    }
+    lightJudge.closeCount++;
 
-  if(bool){
+    if(bool){//httpリクエストで判定
 
-    if(bool === 'ON'){
-      dataName = '../json/lightOn.json';
-      if(lightJudge.closeCount % 2 !== 1){
-        lightJudge.closeCount++;
-      }
-    }else{
-      if(bool === 'OFF'){
-        dataName = '../json/lightOff.json';
-        if(lightJudge.closeCount % 2 !== 0){
+      if(bool === 'ON'){
+        dataName = '../json/lightOn.json';
+        if(lightJudge.closeCount % 2 !== 1){
           lightJudge.closeCount++;
         }
+      }else{
+        if(bool === 'OFF'){
+          dataName = '../json/lightOff.json';
+          if(lightJudge.closeCount % 2 !== 0){
+            lightJudge.closeCount++;
+          }
+        }
+      }
+    }else{//doorSensorで判定
+      if(doorSensor === 'on'){
+        if(lightJudge.closeCount % 2 === 1){
+          dataName = '../json/lightOn.json';
+        }else{
+          dataName = '../json/lightOff.json';
+        }
+      }else{
+        console.log('doorSensor is sleeping');
       }
     }
-  }else{
-    if(lightJudge.closeCount % 2 === 1){
-      dataName = '../json/lightOn.json';
-    }else{
-      dataName = '../json/lightOff.json';
-    }
-  }
-  irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
+    irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
 };
 
 arduino.on('open', function(){
@@ -117,19 +122,30 @@ dp.post = function(data, res){
 
 
 dp.get = function(req, res){
-  if(req.url === '/on'){
-    lightJudge('ON');
-    res.writeHead(200, {'Content-Type':'text/html'});
-    res.end('<h1>ON</h1>');
-  } else {
-    if(req.url === '/off'){
+  switch (req.url){
+    case '/on':
+      lightJudge('ON');
+      res.writeHead(200, {'Content-Type':'text/html'});
+      res.end('<h1>ON</h1>');
+      break;
+    case '/off':
       lightJudge('OFF');
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<h1>OFF</h1>');
-    } else {
+      break;
+    case '/sleep':
+      doorSensor = 'on';
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>doorSleepON</h1>');
+      break;
+    case '/wakeup':
+      doorSensor = 'of';
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>doorWakeUp</h1>');
+    default :
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<h1>ON? OFF?</h1>');
-    }
+      break;
   }
 };
 
