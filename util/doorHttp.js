@@ -95,7 +95,13 @@ arduino.on('open', function(){
           case '1\n' :
           case '1' :
             console.log(color.info('[' + getDate.getTime()+'] door is opened'));
-            if (mailer) { mailer.send('Door is opened.'); }
+            if (mailer) {
+              if(doorSensor === 'on'){
+                mailer.send('Door is opened.');
+              }else{
+                mailer.send('detecting an intruder.');
+              }
+            }
             lightJudge();
             break;
           case '\n':
@@ -114,12 +120,22 @@ var httpServer = new GetPost();
 var dp = {};
 
 dp.post = function(data, res){
-  switch (data){
-    case 'lightOFF': lightJudge('OFF');break;
-    case 'lightON' : lightJudge('ON');break;
-    default        : console.log('onPostData is '+data);
+  var json = null;
+  try{
+    json = JSON.parse(data);
+  }catch(err){
+    console.log(color.error("onPostでJSONparse失敗"));
   }
-  res.end(data);
+  if(json){
+
+  }else{
+    switch (data){
+      case 'lightOFF': lightJudge('OFF');break;
+      case 'lightON' : lightJudge('ON');break;
+      default        : console.log('onPostData is '+data);
+    }
+    res.end(data);
+  }
 };
 
 
