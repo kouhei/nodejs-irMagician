@@ -25,14 +25,15 @@ var fs = require('fs'),
     Mailer = require('../src/mailer'),
     mailer,
 
-    getPost = require('../src/GetPost'),
+    GetPost = require('../src/GetPost'),
+    getPost,
 
     GetDate = require('../src/getDate'),
-    getDate = new GetDate();
+    getDate = new GetDate(),
+    doorSensor = 'on';//doorSensorの判定の有効、無効を切り替え
 
-
-arduino = new SerialPort('/dev/ttyACM0');
-irMagician = new IRMagician('/dev/ttyACM1');//arduinoと同時に繋いだ時
+arduino = new SerialPort('/dev/ttyACM1');
+irMagician = new IRMagician('/dev/ttyACM0');//arduinoと同時に繋いだ時
 
 //mailerのユーザー名などが与えられた時
 if(process.argv[2] && process.argv[3] && process.argv[4]){
@@ -43,18 +44,42 @@ if(process.argv[2] && process.argv[3] && process.argv[4]){
 }
 
 //onかoffかの判定
-lightJudge = function(){
-  var dataName = '';
-  if(!lightJudge.closeCount){
-    lightJudge.closeCount = 0;
-  }
-  lightJudge.closeCount++;
-  if(lightJudge.closeCount % 2 === 1){
-    dataName = '../json/lightOn.json';
-  }else{
-    dataName = '../json/lightOff.json';
-  }
-  irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
+//boool : ONかOFF(optional)
+lightJudge = function(bool){
+    var dataName = '';
+    if(!lightJudge.closeCount){
+      lightJudge.closeCount = 0;
+    }
+
+    if(bool){//httpリクエストで判定
+      lightJudge.closeCount++;
+      if(bool === 'ON'){
+        dataName = '../json/lightOn.json';
+        if(lightJudge.closeCount % 2 !== 1){
+          lightJudge.closeCount++;
+        }
+      }else{
+        if(bool === 'OFF'){
+          dataName = '../json/lightOff.json';
+          if(lightJudge.closeCount % 2 !== 0){
+            lightJudge.closeCount++;
+          }
+        }
+      }
+      irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
+    }else{//doorSensorで判定
+      if(doorSensor === 'on'){
+        lightJudge.closeCount++;
+        if(lightJudge.closeCount % 2 === 1){
+          dataName = '../json/lightOn.json';
+        }else{
+          dataName = '../json/lightOff.json';
+        }
+        irMagician.Lplay(dataName, function(){console.log('Lplay end callback');});
+      }else{
+        console.log('doorSensor is sleeping');
+      }
+    }
 };
 
 arduino.on('open', function(){
@@ -69,9 +94,16 @@ arduino.on('open', function(){
           case '1\n' :
           case '1' :
             console.log(color.info('[' + getDate.getTime()+'] door is opened'));
-            if (mailer) { mailer.send('Door is opened.'); }
+            if (mailer) {
+              if(doorSensor === 'on'){
+                mailer.send('Door is opened.');
+              }else{
+                mailer.send('detecting an intruder.');
+              }
+            }
             lightJudge();
             break;
+          case '\n':
           case '' : break;
           default:console.log(color.error('error'));
         }
@@ -82,4 +114,58 @@ arduino.on('open', function(){
     });
 });
 
-getPost(irMagician);
+//以下http
+var httpServer = new GetPost();
+var dp = {};
+
+dp.post = function(data, res){
+  var json = null;
+  try{
+    json = JSON.parse(data);
+  }catch(err){
+    console.log(color.error("onPostでJSONparse失敗"));
+  }
+  if(json){
+
+  }else{
+    switch (data){
+      case 'lightOFF': lightJudge('OFF');break;
+      case 'lightON' : lightJudge('ON');break;
+      default        : console.log('onPostData is '+data);
+    }
+    res.end(data);
+  }
+};
+
+
+dp.get = function(req, res){
+  switch (req.url){
+    case '/on':
+      lightJudge('ON');
+      res.writeHead(200, {'Content-Type':'text/html'});
+      res.end('<h1>ON</h1>');
+      break;
+    case '/off':
+      lightJudge('OFF');
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>OFF</h1>');
+      break;
+    case '/sleep':
+      doorSensor = 'off';
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>doorSleep</h1>');
+      break;
+    case '/wakeup':
+      doorSensor = 'on';
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>doorWakeUp</h1>');
+      break;
+    default :
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>ON? OFF?</h1>');
+      break;
+  }
+};
+
+httpServer.createServer(dp);
+httpServer.startServer(8080);
