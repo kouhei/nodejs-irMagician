@@ -32,7 +32,6 @@ var fs = require('fs'),
     getDate = new GetDate(),
     doorSensor = 'on';//doorSensorの判定の有効、無効を切り替え
 
-
 arduino = new SerialPort('/dev/ttyACM1');
 irMagician = new IRMagician('/dev/ttyACM0');//arduinoと同時に繋いだ時
 

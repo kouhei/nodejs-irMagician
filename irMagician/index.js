@@ -34,10 +34,11 @@ var IRMagician = function (portName) {
 };
 
 IRMagician.prototype = {
-  fs:require('fs');
-  async: = require('async');
-  color: = require('../src/color');
+  fs: require('fs');
+  async: require('async');
+  color: require('../src/color');
   fileExistCheck: = require('../src/fileExistCheck');
+  serial:
 };
 
 //position: エラーが起こった状況 (ex: 'writing p\\r\\n')
