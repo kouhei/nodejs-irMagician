@@ -5,7 +5,6 @@
 var IRMagician = function (portName) {
   'use strict';
   var self = this;
-  this.serial = require('serialport');
   this.SerialPort = this.serial.SerialPort;
 
   this.portName = portName || '/dev/ttyACM0';//MEMO:/dev/ttyACM1
@@ -34,11 +33,11 @@ var IRMagician = function (portName) {
 };
 
 IRMagician.prototype = {
-  fs: require('fs');
-  async: require('async');
-  color: require('../src/color');
-  fileExistCheck: = require('../src/fileExistCheck');
-  serial:
+  fs: require('fs'),
+  async: require('async'),
+  color: require('../src/color'),
+  fileExistCheck: require('../src/fileExistCheck',
+  serial: require('serialport')
 };
 
 //position: エラーが起こった状況 (ex: 'writing p\\r\\n')
