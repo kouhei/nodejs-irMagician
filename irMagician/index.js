@@ -36,7 +36,7 @@ IRMagician.prototype = {
   fs: require('fs'),
   async: require('async'),
   color: require('../src/color'),
-  fileExistCheck: require('../src/fileExistCheck',
+  fileExistCheck: require('../src/fileExistCheck'),
   serial: require('serialport')
 };
 
