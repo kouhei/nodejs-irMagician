@@ -131,6 +131,8 @@ dp.post = function(data, res){
     switch (data){
       case 'lightOFF': lightJudge('OFF');break;
       case 'lightON' : lightJudge('ON');break;
+      case 'airconON': irMagician.Lplay('../json/airconON-heater.json', function(){console.log('Lplay end callback');});
+      case 'airconOFF': irMagician.Lplay('../json/airconOFF-heater.json', function(){console.log('Lplay end callback');});
       default        : console.log('onPostData is '+data);
     }
     res.end(data);
@@ -159,6 +161,16 @@ dp.get = function(req, res){
       doorSensor = 'on';
       res.writeHead(200, {'Content-Type': 'text/html'});
       res.end('<h1>doorWakeUp</h1>');
+      break;
+    case '/airconon':
+      irMagician.Lplay('../json/airconON-heater.json', function(){console.log('Lplay end callback');});
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>airconON</h1>');
+      break;
+    case '/airconoff':
+      irMagician.Lplay('../json/airconOFF-heater.json', function(){console.log('Lplay end callback');});
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('<h1>airconOFF</h1>');
       break;
     default :
       res.writeHead(200, {'Content-Type': 'text/html'});
