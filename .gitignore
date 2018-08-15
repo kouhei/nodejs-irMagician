@@ -9,3 +9,4 @@ setting2.js
 doorSensor-five.js
 /node_modules/*
 voice/*
+.DS_Store
