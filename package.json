@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/fai1618/nodejs-irMagician.git"
+    "url": "https://github.com/kouhei/nodejs-irMagician.git"
   },
   "author": {
     "name": "Kouhei Yamada",
@@ -16,28 +16,31 @@
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fai1618/irMT/issues",
-  "email": "fai1.618033@gmail.com"
+    "url": "https://github.com/kouhei/irMT/issues",
+    "email": "fai1.618033@gmail.com"
   },
-  "homepage": "https://github.com/fai1618/irMT",
-  "keywords":["irMagician", "IR"],
+  "homepage": "https://github.com/kouhei/irMT",
+  "keywords": [
+    "irMagician",
+    "IR"
+  ],
   "dependencies": {
-    "async": "^1.4.2",
+    "async": "^1.5.2",
+    "nan": "git+https://github.com/nodejs/nan.git",
     "serialport": "^2.0.1"
   },
   "devDependencies": {
     "forever-monitor": "^1.7.0",
-  "nodemailer": "0.7.x"
+    "nodemailer": "0.7.x"
   },
   "directories": {
     "bin": "",
-  "example": "",
-  "doc": "./README.md",
-  "lib": "",
-  "man": ""
+    "example": "",
+    "doc": "./README.md",
+    "lib": "",
+    "man": ""
   },
   "engines": {
     "node": ""
   }
 }
-
